@@ -24,15 +24,17 @@ license_plates = [
     "OPQ8901", "RST2347", "LM3456P", "J123456", "789XYZ0"
 ]
 
+
 def generate_plate():
     if len(license_plates) == 0:
         print("No more license plates available")
         return "DEFAULT PLATE"
-    index = random.randint(0,len(license_plates))
+    index = random.randint(0, (len(license_plates)-1))
     chosen_plate = license_plates[index]
     license_plates.remove(chosen_plate)
 
     return chosen_plate
+
 
 class Car:
 
@@ -45,34 +47,36 @@ class Car:
 
 class Carpark:
 
-    def __init__(self, bays, closing_time, opening_time):
+    def __init__(self, bays, location, displays: []):
+        self.location = location
         self.bays = bays
         self.occupied_bays = 0
         self.cars = []
+        self.displays = displays or []
         self.entrance_display = Display()
         self.temp_display = Display()
 
     def get_available_bays(self):
         return self.bays - self.occupied_bays
 
-    def add_car(self, _car: Car):
+    def add_car(self, _car: Car, display: Display):
         self.cars.append(_car)
         self.occupied_bays += 1
 
         if self.get_available_bays() == 0:
-            self.entrance_display.update_display("No Bays Available, Carpark Locked")
+            display.update_display("No Bays Available, Carpark Locked")
         else:
-            self.entrance_display.update_display(f"{self.get_available_bays()}/{self.bays} bays are currently available")
+            display.update_display(f"{self.get_available_bays()}/{self.bays} bays are currently available")
 
-    def remove_car(self, _car: Car):
+    def remove_car(self, _car: Car, display: Display):
         self.cars.remove(_car)
         self.occupied_bays -= 1
 
-        self.entrance_display.update_display(f"{self.get_available_bays()}/{self.bays} bays are currently available")
+        display.update_display(f"{self.get_available_bays()}/{self.bays} bays are currently available")
         license_plates.append(_car.plate)
 
-    def update_temp(self, temp: float):
-        self.temp_display.update_display(f"Current Temperature: {temp}C")
+    def update_temp(self, temp: float, time: int, display: Display):
+        display.update_display(f"Current Temperature: {temp}C\nCurrent Time: {time}")
 
 
 if __name__ == "__main__":

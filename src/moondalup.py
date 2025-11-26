@@ -1,5 +1,11 @@
 import time as task
 import random
+from datetime import datetime
+
+
+def to_12hr_time(time_24_hour):
+    return datetime.strptime(time_24_hour, "%H:%M").strftime("%I:%M %p")
+
 
 def lerp(start: float, end: float, t: float) -> float:
     """
@@ -24,11 +30,14 @@ def lerp(start: float, end: float, t: float) -> float:
 
 
 days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+
+
 class City:
 
     day_count = 1
     day = days[day_count]
     time: int = 0
+    formatted_time: str
     temperature = 20
     min: int
     max: int
@@ -50,10 +59,11 @@ class City:
             current_time = 12 - (self.time - 12)
         else:
             current_time = self.time
-        self.temperature = lerp(self.min, self.max, current_time / 12)
-        print(self.temperature)
+        self.temperature = round(lerp(self.min, self.max, current_time / 12), 1)
+        # print(self.temperature)
 
         self.time += 1
+        self.formatted_time = to_12hr_time(f"{self.time}:00")
 
         if self.time == 25:
             self.time = 0
@@ -64,9 +74,9 @@ class City:
         return days[self.day_count]
 
     def get_time(self):
-        return self.time
+        return self.formatted_time
 
 
-##if __name__ == "__main__":
+# if __name__ == "__main__":
 
 

@@ -5,11 +5,14 @@ Code required for IPRIoT final assessment
 > - Carpark
 > - Car
 > - Display
+
+
 ```mermaid
 
 classDiagram
-    Carpark <|-- Display
+    Carpark *-- Display
     Carpark --|> Car
+    Sensor o-- Carpark
     
     
     class Carpark{
