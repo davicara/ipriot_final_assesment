@@ -55,6 +55,7 @@ class City:
 
     def update_city(self):
         current_time: int
+
         if self.time > 12:
             current_time = 12 - (self.time - 12)
         else:
@@ -63,6 +64,9 @@ class City:
         # print(self.temperature)
 
         self.time += 1
+
+        if self.time == 24:
+            self.time = 0
         self.formatted_time = to_12hr_time(f"{self.time}:00")
 
         if self.time == 25:

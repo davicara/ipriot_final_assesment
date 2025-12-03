@@ -38,7 +38,7 @@ def generate_plate():
 class Car:
     _cars = {}
 
-    def __new__(cls, plate, *args, **kwargs):
+    def __new__(cls, plate=None, *args, **kwargs):
         if not plate:
             car = super().__new__(cls)
             car.plate = generate_plate()
@@ -51,7 +51,7 @@ class Car:
                 car.plate = plate
                 return car
 
-    def __init__(self, plate):
+    def __init__(self, plate=None):
         if not hasattr(self, "_initialized"):
             # self.plate = plate
             self._initialized = True
