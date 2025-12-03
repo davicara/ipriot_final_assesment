@@ -1,12 +1,15 @@
 import math
 
-displays = []
+displays = {}
 class Display:
 
     id = 0
 
     def __init__(self, name=len(displays)):
-        displays.append(self)
+       # if displays[name]:
+       #     print("ERROR: Cannot create multiple displays with same name")
+
+        displays[name] = self
         self.id = name
 
     def update_display(self, message: str):
@@ -37,3 +40,10 @@ class Display:
         print(prefix)
         print(message)
         print(len(prefix)*"*")
+
+    @classmethod
+    def get_display(cls, name):
+        if displays[name]:
+            return displays[name]
+        else:
+            print("No Display Found")

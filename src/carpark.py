@@ -1,6 +1,6 @@
 import random
 
-from display import Display
+from src.display import Display
 
 license_plates = [
     "ABC1234", "XYZ5678", "LMN9876", "QWE2345", "PQR6789",
@@ -35,14 +35,27 @@ def generate_plate():
 
     return chosen_plate
 
-
 class Car:
+    _cars = {}
 
-    def __init__(self, plate: str = None):
+    def __new__(cls, plate, *args, **kwargs):
         if not plate:
-            self.plate = generate_plate()
+            car = super().__new__(cls)
+            car.plate = generate_plate()
+            return car
         else:
-            self.plate = plate
+            if plate in cls._cars:
+                return cls._cars[plate]
+            else:
+                car = super().__new__(cls)
+                car.plate = plate
+                return car
+
+    def __init__(self, plate):
+        if not hasattr(self, "_initialized"):
+            # self.plate = plate
+            self._initialized = True
+
 
 
 class Carpark:
@@ -59,7 +72,13 @@ class Carpark:
     def get_available_bays(self):
         return self.bays - self.occupied_bays
 
-    def add_car(self, _car: Car, display: Display):
+    def add_car(self, _car: Car, display: Display = None):
+        if not display:
+            display = self.displays[1]
+
+        if self.get_available_bays() == 0:
+            return
+
         self.cars.append(_car)
         self.occupied_bays += 1
 
@@ -68,7 +87,12 @@ class Carpark:
         else:
             display.update_display(f"{self.get_available_bays()}/{self.bays} bays are currently available")
 
-    def remove_car(self, _car: Car, display: Display):
+    def remove_car(self, _car: Car, display: Display = None):
+        if not display:
+            display = self.displays[1]
+        if _car not in self.cars:
+            raise ValueError("Car does not exist in carpark")
+
         self.cars.remove(_car)
         self.occupied_bays -= 1
 
@@ -80,8 +104,5 @@ class Carpark:
 
 
 if __name__ == "__main__":
-    carpark = Carpark(5)
-    car = Car("1EAT415")
-    carpark.add_car(car)
-    carpark.remove_car(car)
+    pass
 

@@ -44,7 +44,5 @@ def main():
         task.sleep(1)
 
 
-
-
 if __name__ == "__main__":
     main()
