@@ -11,9 +11,11 @@ class Display:
 
         displays[name] = self
         self.id = name
+        self.message = ""
 
     def update_display(self, message: str):
 
+        self.message = message
         new_text = message.split("\n")
         length = len(message)
 
