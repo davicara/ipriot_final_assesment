@@ -20,15 +20,17 @@ def main():
     carpark = Carpark.Carpark(100, "Moondalup", [display1, display2])
     sensor = Sensor.Sensor(carpark)
 
+    carpark.log_book.print_log()
+
     index = 1
 
-    def update_index(index):
-        if index == 10:
+    def update_index(_index):
+        if _index == 10:
             city.update_city()
             carpark.update_temp(city.temperature, city.get_time(), display2)
             return 1
-        index += 1
-        return index
+        _index += 1
+        return _index
 
     while True:
         index = update_index(index)

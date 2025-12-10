@@ -1,5 +1,5 @@
 import random
-
+from src.log_book import LogBook
 from src.display import Display
 
 license_plates = [
@@ -57,7 +57,6 @@ class Car:
             self._initialized = True
 
 
-
 class Carpark:
 
     def __init__(self, bays, location, displays: []):
@@ -68,8 +67,10 @@ class Carpark:
         self.displays = displays or []
         self.entrance_display = Display()
         self.temp_display = Display()
+        self.log_book = LogBook("car_park_"+location)
 
     def get_available_bays(self):
+
         return self.bays - self.occupied_bays
 
     def add_car(self, _car: Car, display: Display = None):
@@ -79,6 +80,7 @@ class Carpark:
         if self.get_available_bays() == 0:
             return
 
+        self.log_book.log_object(_car)
         self.cars.append(_car)
         self.occupied_bays += 1
 

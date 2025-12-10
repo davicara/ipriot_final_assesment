@@ -1,7 +1,6 @@
 import carpark
 
 
-
 class Sensor:
 
     def __init__(self, _carpark: carpark.Carpark):
